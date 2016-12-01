@@ -34,6 +34,6 @@ TODO: How to do a quantum computation?
 
 ## FAQ
 
-1. Why do this in Haskell?
-2. What are the use cases of this repository?
-3. Where to go from here?
+- Why do this in Haskell?
+- What are the use cases of this repository?
+- Where to go from here?
