@@ -4,3 +4,4 @@ import Lib
 
 main :: IO ()
 main = quantumRun
+
