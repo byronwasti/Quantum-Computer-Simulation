@@ -2,6 +2,10 @@
 
 *Note: In order to use the code in this repo, you will need to have Haskell-Stack installed. You can install it using these instructions [https://docs.haskellstack.org/en/stable/install_and_upgrade/](https://docs.haskellstack.org/en/stable/install_and_upgrade/).*
 
+*GAMEPLAN: Simple simulator for Quantum Computer (X, Y, Z gates and Hadamard) as well as explanation of how to link things Then have a translation for how online quantum computer simulators function*
+
+This repository holds files necessary to implement a Quantum Computer simulation using 4 fundamental Quantum logic gates (X, Y, Z and Hadamard).
+
 TODO: What did I do? What is this repository?
 
 TODO: Why try to simulate a quantum computer?
