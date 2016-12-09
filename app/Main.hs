@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import QLib
 
 main :: IO ()
 main = quantumRun
