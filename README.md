@@ -36,8 +36,17 @@ TODO: How is a quantum gate represented in the code?
 
 TODO: How to do a quantum computation?
 
+
 ## FAQ
 
-- Why do this in Haskell?
+- Why do this in ~~Haskell~~?
 - What are the use cases of this repository?
 - Where to go from here?
+
+
+# Resources
+
+- Quantum Computing: A Gentle Introduction by By Eleanor G. Rieffel and Wolfgang H. Polak
+- Haskell Simulator of Quantum Computer, Jan Skibinski [http://web.archive.org/web/20010803034527/http://www.numeric-quest.com/haskell/QuantumComputer.html](http://web.archive.org/web/20010803034527/http://www.numeric-quest.com/haskell/QuantumComputer.html)
+- Michael Nielson's Videos on Quantum Computation [youtube](https://www.youtube.com/watch?v=X2q1PuI2RFI&list=PL1826E60FD05B44E4)
+

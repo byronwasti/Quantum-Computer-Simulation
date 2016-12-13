@@ -1,44 +1,72 @@
 module QLib
-    ( quantumRun,
-      Qubit(..),
+    ( quantumRun
     ) where
 
 import Data.Complex
-import Data.List
+import Data.Bits
+import qualified Data.List as L
 import Text.Printf
 import Numeric.LinearAlgebra
 
 quantumRun :: IO ()
 quantumRun = do putStrLn "Some Func"
-                putStrLn $ printf "%b" (3 :: Int)
-                let c = Qubit $ fromList [1 :+ 0, 0]
-                putStrLn $ show c
-                let d = sauliX c
-                putStrLn $ show d
-                let e = Register $ take 5 $ repeat (Qubit $ fromList [1, 0])
-                --let e = sauliZ d
-                putStrLn $ show e
+                let a = newRegister 4
+                putStrLn $ show a
+--                putStrLn $ printf "%b" (3 :: Int)
+--                let c = Qubit $ fromList [1 :+ 0, 0]
+--                putStrLn $ show c
+--                let d = sauliX c
+--                putStrLn $ show d
+--                let e = Register $ take 5 $ repeat (Qubit $ fromList [1, 0])
+--                --let e = sauliZ d
+--                putStrLn $ show e
 
-data Qubit = Qubit (Vector C)
-data Register = Register [Qubit]
+--data Qubit = Qubit (Double, Int)
+data Qubit = Qubit { probability :: Double, qubit :: Int }
+
+instance Eq Qubit where
+    x == y = qubit x == qubit y
+
+instance Ord Qubit where
+    x <= y = qubit x <= qubit y
 
 instance Show Qubit where
-    show (Qubit vect) = show vect
+    show x = (show . probability $ x) ++ " |" ++ (show . qubit $ x) ++ ">"
+
+data Register = Register { nStates :: Int, qubits :: [Qubit] }
 
 instance Show Register where
-    show (Register xs) = concatMap show xs
+    --show (Register a x) = (show a) (show x) ++ ">"
+    show x = concatMap ((flip (++) "\n") . show) $ qubits x
 
-sauliX :: Qubit -> Qubit
-sauliX (Qubit x) = Qubit (xgate #> x)
-                where xgate = (2><2)[0, 1, 1, 0] :: Matrix C
+instance Eq Register where
+    x == y = qubits x == qubits y 
 
-sauliY :: Qubit -> Qubit
-sauliY (Qubit x) = Qubit (ygate #> x)
-                where ygate = (2><2)[0:+1, 0, 0, 0:+1] :: Matrix C
+newRegister :: Int -> Register
+newRegister n = Register { nStates = n, qubits = [blankQubit (x-1) | x <- [1..2^n] ] }
+                where blankQubit 0 = Qubit { probability = 1.0, qubit = 0 }
+                      blankQubit y = Qubit { probability = 0.0, qubit = y }
 
-sauliZ :: Qubit -> Qubit
-sauliZ (Qubit x) = Qubit (zgate #> x)
-                where zgate = (2><2)[1, 0, 0, -1] :: Matrix C
+sauliX :: Register -> Int -> Register
+sauliX xs pos = map (\x -> x `xor` pos) xs
+
+--newRegister :: Int -> QuantumRegister
+--newRegister 0 = QuantumRegister 0 []
+--newRegister 1 = QuantumRegister 1 [ (Register 0 [Zero]), (Register 0 [One]) ]
+--newRegister x = QuantumRegister x [ 
+
+
+--sauliX :: Qubit -> Qubit
+--sauliX (Qubit x) = Qubit (xgate #> x)
+--                where xgate = (2><2)[0, 1, 1, 0] :: Matrix C
+--
+--sauliY :: Qubit -> Qubit
+--sauliY (Qubit x) = Qubit (ygate #> x)
+--                where ygate = (2><2)[0:+1, 0, 0, 0:+1] :: Matrix C
+--
+--sauliZ :: Qubit -> Qubit
+--sauliZ (Qubit x) = Qubit (zgate #> x)
+--                where zgate = (2><2)[1, 0, 0, -1] :: Matrix C
                 
 
 --data Bit = Zero | One deriving Eq
