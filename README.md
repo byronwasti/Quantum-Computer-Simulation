@@ -2,8 +2,6 @@
 
 *~~Note: In order to use the code in this repo, you will need to have Haskell-Stack installed. You can install it using these instructions [https://docs.haskellstack.org/en/stable/install_and_upgrade/](https://docs.haskellstack.org/en/stable/install_and_upgrade/).~~ You need Python3 installed.*
 
-*GAMEPLAN: Simple simulator for Quantum Computer (X, Y, Z gates and Hadamard) as well as explanation of how to link things Then have a translation for how online quantum computer simulators function*
-
 This repository holds files necessary to run simulation of quantum computation using 5 fundamental quantum logic gates (X, Y, Z, Hadamard and CNOT). There are *almost* two implementations of basic quantum computation, one in Python and one in Haskell. Currently the Haskell version is having difficulties and is not functional.
 
 One of the main reasons for implementing quantum computation simulation in Python/Haskell is to more deeply understand how a quantum computer operates. By implementing a simulation for quantum computation, one can better understand where a quantum computer can be better than a classical computer. 
@@ -84,8 +82,6 @@ This new way of representing the qubit states comes with its own drawbacks. It i
 
 ### Quantum Logic Gate
 
-TODO: How is a quantum gate represented in the code?
-
 A quantum logic gate is similar to a classical logic gate. It is the method for changing the states of qubits. There are a few subtle differences that end up having some dramatic consequences.
 
 One of the first differences is that a quantum gate is always reversible. Thus, a 2-input quantum gate has 2-outputs. Since every quantum gate can be represented as a matrix, every quantum gate is a special type of matrix called a unitary matrix.
@@ -145,17 +141,50 @@ For ease of reading, the program will write the binary representation of the com
 
 Much like a classical computer, in order for a quantum computer to do useful computations, multiple gates have to be strung together and connected. Thankfully, this is as easy as with a classical computer. You simply link the output of one gate into the input of another. There are nifty things you can do with a quantum computer that you can't do with a classical computer. This makes sense, or else why would people even care about quantum computers?
 
-One of the most fundamental things is called the Bell State. This is essentially a 2-qubit system which has the qubits *entangled* with each other.
+One of the most fundamental things is called the Bell State. This is essentially a 2-qubit system which has the qubits *entangled* with each other. One example of a bell state is the `|00> + |11>` state for two qubits. (Note the 1/sqrt(2) prefactor is dropped as is usual in most writings).
 
-TODO: How to do a quantum computation?
+The easiest way to construct a Bell State is to take two qubits with values of `|0>`. Take the first qubit and put it through a Hadamard gate, and then apply the cnot gate to the two qubits, with the first qubit controlling the gate.
 
+#### Linking It Together In The Code
+
+The easiest way to construct a Quantum Computer using the simulator in Python is to go into the `python/main.py` file. On a fresh clone of the repository there is code for constructing the bell state using a 2 qubit system.
+
+```python
+import quantum as Q
+
+base = Q.Register(2)
+base.hadamard(1)
+base.cnot(1, 0)
+print(base)
+```
+
+You can run the program using `python main.py` and it will print out the bell state. The results will look something like:
+
+```bash
+$ python main.py
+['(0.7071067811865475+0j) |0>', '(0.7071067811865475+0j) |3>']
+```
+
+To interpret the results, notice that it is an array of qubit states with coefficients in front of them. For this case, there is a 1/sqrt(2) coefficient in front of the `|00>` state and the `|3>` state (or the `|11>` state).  This is the most basic Bell State we discussed above.
+
+
+You can now go forth and try to implement algorithms using this simulator, or submit pull-requests to implement additional quantum gates.
 
 ## FAQ
 
 - Why do this in ~~Haskell~~ Python?
+
+Initially I wanted to this entirely in Haskell. The main reason is because I thought it would be easy to implement and verify in Haskell. However, I had a ton of trouble figuring out a clean way to represent the qubit states and apply gates to them. You can check out the Haskell Simulator in the Resources section, because someone else managed to get it to work.
+
+I decided to just use Python for speed of development. Python is very quick to just whip up some code, although difficult to make production-ready code. Considering this was a learning experience, it was the perfect tool.
+
 - What are the use cases of this repository?
+
+The main use case is as a reference for others learning about Quantum computing and interested in designing a quantum computer simulator. There are a lot of very complex simulators out there that are very difficult to grok because they have many optimizations in order to make them run more quickly. A quick glance through my code and you will notice that it is not not at all optimized, making it very easy to understand.
+
 - Where to go from here?
 
+I would like to try implementing the quantum computer simulation in Haskell again. Figuring out a very succinct way to represent the qubit states would allow for a very simple-to-parse quantum computer simulator in Haskell.
 
 # Resources
 
