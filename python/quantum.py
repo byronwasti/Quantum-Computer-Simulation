@@ -16,7 +16,15 @@ class Register:
         else:
             return False
 
-    def sauliX(self, bit):
+    def updateNicely(self, reg, value, idx):
+        if reg[idx] == 0:
+            reg[idx] = value
+        else:
+            reg[idx] = reg[idx] + value
+
+        return reg
+
+    def X(self, bit):
         newReg = [0 for x in range(2**self.size)]
         for i, val in enumerate(self.qubits):
             newIdx = i ^ (1 << bit)
@@ -24,7 +32,7 @@ class Register:
 
         self.qubits = newReg
 
-    def sauliY(self, bit):
+    def Y(self, bit):
         newReg = [0 for x in range(2**self.size)]
         for i, val in enumerate(self.qubits):
             newIdx = i ^ (1 << bit)
@@ -35,7 +43,7 @@ class Register:
 
         self.qubits = newReg
 
-    def sauliZ(self, bit):
+    def Z(self, bit):
         newReg = [0 for x in range(2**self.size)]
         for i, val in enumerate(self.qubits):
             if self.bit_is_set(i, bit):
@@ -44,14 +52,6 @@ class Register:
                 newReg[i] = val*(1)
 
         self.qubits = newReg
-
-    def updateNicely(self, reg, value, idx):
-        if reg[idx] == 0:
-            reg[idx] = value
-        else:
-            reg[idx] = reg[idx] + value
-
-        return reg
 
     def hadamard(self, bit):
         newReg = [0 for x in range(2**self.size)]

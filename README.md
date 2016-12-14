@@ -109,10 +109,37 @@ The last gate we will discuss and implement is the CNOT gate, or controlled-Not 
 
 ----
 
-*Phew* that was a lot. 
-
+*Phew* that was a lot. Hopefully you came out of that with some understanding of the 5 main quantum gates. The interesting stuff comes when you start linking the gates together to do nifty things.
 
 #### Quantum Logic Gates in the Code
+
+Depending on how the qubits are represented in code, the quantum gates can be very trivial to implement or a complete pain. By representing the qubit states the way I did in Python, there are a bit of a pain to implement. Since I couldn't quite figure out how to implement the gates in Haskell, I will not go over that here.
+
+Also, since many of the gates share very similar traits, I will only go over the X Gate. The rest of the gates can be found in `python/quantum.py`.
+
+Here is the full implementation of the X gate:
+
+```python
+def X(self, bit):
+    newReg = [0 for x in range(2**self.size)]
+    for i, val in enumerate(self.qubits):
+        newIdx = i ^ (1 << bit)
+        newReg[newIdx] = val
+
+    self.qubits = newReg
+```
+
+*Note that this is implemented as a method of the `Register` class we defined above*
+
+The basic mode of operation is to set up a new "Register" or list of all qubit states (I try to keep things functional where possible) and then populate it with the swapped around coefficients.
+
+For instance, let us consider a Register of length 2 (thus 2 qubits, and 4 unique states). We represent that in our code as an array of length four. The values stored in each index of the array are the coefficients for that index's quantum state.
+
+The `|00>` state, where both qubits are of state `|0>` is thus in the 0th index of the array. At the start of the program, this would have a value of `1`, since both qubits start out as `|0>`. Thus our Register (or array) looks like `[ 1, 0, 0, 0 ]`.
+
+Applying the X Gate to the first qubit in this register would flip the first qubit to a `|1>`. Thus, the `|01>` state would have a value of `1` and the `|00>` state would have a value of 0. Our new Register looks like `[ 0, 1, 0, 0 ]`.
+
+For ease of reading, the program will write the binary representation of the combined states as simply the decimal equivalent. Thus, the `|10>` state is just `|2>`. 
 
 ### Linking It All Together
 
