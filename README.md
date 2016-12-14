@@ -143,6 +143,10 @@ For ease of reading, the program will write the binary representation of the com
 
 ### Linking It All Together
 
+Much like a classical computer, in order for a quantum computer to do useful computations, multiple gates have to be strung together and connected. Thankfully, this is as easy as with a classical computer. You simply link the output of one gate into the input of another. There are nifty things you can do with a quantum computer that you can't do with a classical computer. This makes sense, or else why would people even care about quantum computers?
+
+One of the most fundamental things is called the Bell State. This is essentially a 2-qubit system which has the qubits *entangled* with each other.
+
 TODO: How to do a quantum computation?
 
 

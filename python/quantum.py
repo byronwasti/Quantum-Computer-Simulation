@@ -1,14 +1,29 @@
 import numpy as np
 
-
 class Register:
     def __init__(self, size):
+        if size > 20:
+            raise Exception("Register size too large to simulate")
+
         self.size = size
         self.qubits = [ 0+0j for x in range(2**size) ] 
         self.qubits[0] = 1+0j
 
     def __str__(self):
         return str( [ str(x)+" |"+str(i)+">" for i, x in enumerate(self.qubits) if x != 0] )
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.qubits == other.qubits
+        else:
+            return False
+
+    def injectState(self, qubits):
+        if len(qubits) == (2**self.size):
+            self.qubits = qubits
+            return True
+        else:
+            return False
 
     def bit_is_set(self, num, bit):
         if (num & (1<<bit)) > 0:
@@ -67,20 +82,13 @@ class Register:
 
         self.qubits = newReg
 
-    #def cnot(self, setBit, changeBit):
-        #newReg = [x for x in self.qubits]
-        #for i, val in enumerate(self.qubits):
-            #if self.bit_is_set(i, setBit)
+    def cnot(self, setBit, changeBit):
+        newReg = [0 for x in range(2**self.size)]
+        for i, val in enumerate(self.qubits):
+            newIdx = i ^ (1 << changeBit)
+            if self.bit_is_set(i, setBit):
+                self.updateNicely(newReg, val, newIdx)
+            else:
+                self.updateNicely(newReg, val, i)
 
-if __name__ == "__main__":
-    print("Hello!")
-    base = Register(6)
-    print(base, "orig")
-    #base.sauliX(0)
-    print(base, "X")
-    #base.sauliY(1)
-    print(base, "Y")
-    #base.sauliZ(1)
-    print(base, "Z")
-    base.hadamard(0)
-    print(base, "Hadamard")
+        self.qubits = newReg
